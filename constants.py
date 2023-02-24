@@ -1,33 +1,15 @@
-import os
-import pymongo
+import database
+import logging
 
-# DATABASE CONNECTIVITY
-client = pymongo.MongoClient("mongodb://localhost:27017")
-db = client['Student_TeleBot']
-res = client[""]
-# register = db['Student_Registrations']
-print("Connected Successfully")
+# <==================== CONSTANTS ===========================>
 
-years = [19,20,21,22]
-student_registrations = {}
-for y in years:
-    student_registrations[y] = db[f'R{y} Student Registrations']
-# print(student_registrations)
-
-# USER AUTHORIZATION FUNCTION
-def auth_user(message):
-    registered = None
-    for y in years:
-        if student_registrations[y].find_one({'_id':message.chat.id}) == registered:
-            continue
-        else:
-            registered = True
-            break
-    return registered
+years = []
+for year in database.results.list_collection_names():
+    years.append(int(year[1:3]))
 
 semesters = ['1-1','1-2','2-1','2-2','3-1','3-2','4-1','4-2']
 
-commands = ['/start','/register','/results','/studentsummary','/departmentsummary', '/help']
+commands = ['/start','/register','/help','/deleteuser','/finduser', '/totalregistrations']
 
 test_ids = ['20bq1a4213@vvit.net','20bq1a4216@vvit.net','20bq1a4222@vvit.net','20bq1a4264@vvit.net']
 
