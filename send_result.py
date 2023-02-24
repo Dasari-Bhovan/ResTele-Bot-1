@@ -83,7 +83,8 @@ def result_message(message):
                     for j,k in report_dict[i].items():
                         if j=="HTNO":
                             continue
-                        authrization_dict["message"]+=j+" : "+k+"\n"
+                        authrization_dict["message"]+=j+" : "+str(k)+"\n"
         authrization_dict["message"] += "\nAny Problem? /help"
         return authrization_dict
     return authrization_dict
+
