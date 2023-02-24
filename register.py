@@ -38,6 +38,23 @@ def authenticate_user(message):
 
 # <=================================================================>
 
+def results_authenticate_user(message):
+    # print("Authenticating")
+    registered = None
+    # we'll check in every year's collection whether the student's chat-id
+    # is registered or not. If we found the chat-id then we will break the loop 
+    # and return "registered" variable as "True" else we will return "None"
+    for y in years:
+        user_dict = student_registrations[y].find_one({'_id':message.chat.id})
+        if user_dict == registered:
+            continue
+        else:
+            registered = True
+            break
+    return user_dict
+
+# <=================================================================>
+
 # <================== VERIFY SECURITY CODE AND REGISTER THE STUDENT ====================>
 
 def verify_otp(message):

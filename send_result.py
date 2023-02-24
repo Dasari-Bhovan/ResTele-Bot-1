@@ -1,6 +1,7 @@
 import logging
 import database
 import constants
+import register as reg
 # <==================== LOGGING ===========================>
 
 reg_logger = logging.getLogger(__name__)
@@ -30,11 +31,11 @@ def result_message(message):
     reg_collection = database.stu_registration[f'R{year} Student Registrations']
 
     # Verifying the registration of the user
-    user_dict = reg_collection.find_one({"_id":message.chat.id})
+    user_dict = reg.results_authenticate_user(message)
     if user_dict == None:
         authrization_dict["message"] = constants.wrong_msg
         return authrization_dict
-    user_dict = dict(reg_collection.find_one({"_id":message.chat.id}))
+    user_dict = dict(user_dict)
 
     # Verifying the user with given roll number is registered or not
     user_of_given_roll_number = reg_collection.find_one({"ROLL_NUM":Roll_no})
