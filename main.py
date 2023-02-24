@@ -95,7 +95,7 @@ while True:
                 bot.send_message(message.chat.id,)
         # ====================================================>
 
-        # ====================== USER DETAILS COMMAND =====================>
+        # ====================== USER DETAILS COMMAND ===================>
         @bot.message_handler(commands=["finduser"], func=reg.admin_authentication)
         def get_user_details(message):
             bot.send_message(message.chat.id, "Enter the student Roll Number")
