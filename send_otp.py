@@ -35,7 +35,7 @@ def otpmail(mailid, name):
         otp = []
         otp = generateOtp()
         otp_dict.update({mailid.chat.id:[otp,mailid.text,3]})
-        print(otp_dict)
+        # print(otp_dict)
         x="""
         <html>
         <body>

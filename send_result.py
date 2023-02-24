@@ -80,7 +80,7 @@ def result_message(message):
                 continue
             else:
                 if len(report_dict[i].items())!=0:
-                    authrization_dict["message"] += f"➡️ {i} Semester End Exam Result ⬅️\n\n"
+                    authrization_dict["message"] += f"\n ➡️ {i} Semester End Exam Result ⬅️\n"
                     for j,k in report_dict[i].items():
                         if j=="HTNO":
                             continue
