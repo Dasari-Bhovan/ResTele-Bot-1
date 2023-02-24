@@ -1,5 +1,4 @@
 import logging
-import pymongo
 import database
 import constants
 # <==================== LOGGING ===========================>
