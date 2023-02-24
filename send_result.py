@@ -16,6 +16,7 @@ def result_message(message):
     authrization_dict = {}
     authrization_dict["message"] = "Please check the roll number. No results found!\nAny Problem? /help"
     authrization_dict["user_roll_num"] = None
+    authrization_dict["user_id"] = None
     authrization_dict["id"] = None
     # Handling "message" object
     msg_list = message.text.split()
@@ -46,6 +47,7 @@ def result_message(message):
     if user_dict["_id"] != user_of_given_roll_number["_id"]:
         authrization_dict["id"] = user_of_given_roll_number["_id"]
         authrization_dict["user_roll_num"] = user_dict["ROLL_NUM"]
+        authrization_dict["user_id"] = user_dict["_id"]
     
     # Result message generation begins here
     report = results_collection.find_one({"_id":Roll_no})

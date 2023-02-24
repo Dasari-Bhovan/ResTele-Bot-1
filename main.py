@@ -125,10 +125,12 @@ while True:
         def msg_result(message):
             result = send_result.result_message(message)
             if result['user_roll_num'] == None and result["id"] == None:
-                bot.send_message(message.chat.id, result["message"]+report)
-            elif result['user_roll_num'] not in ["1490833723","1041369254","1387682420"]:
+                bot.send_message(message.chat.id, result["message"]+"\n" + report)
+            elif result['user_id'] not in reg.admin:
                 bot.send_message(result["id"], f'Student with {result["user_roll_num"]} has accessed your results.')
-                bot.send_message(result["id"], result["message"]+report)
+                bot.send_message(result["user_id"], result["message"]+"\n" + report)
+            else:
+                bot.send_message(result["user_id"], result["message"]+"\n" + report)
         # ====================================================>
 
         # ====================== POLLING =====================>
