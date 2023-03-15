@@ -22,9 +22,13 @@ def result_message(message):
     # Handling "message" object
     msg_list = message.text.split()
     Roll_no=msg_list[0].upper()
-    year=Roll_no[:2]
+    # year=1
     if Roll_no[4:6] == "5A":
         year=str(int(Roll_no[:2])-1)
+    elif Roll_no[4:6] == "1A":
+        year=str(int(Roll_no[:2]))
+    else:
+        year=1
     
     # Getting Collections from the database
     results_collection = database.results[f"R{year} Results"]
@@ -45,7 +49,8 @@ def result_message(message):
     user_of_given_roll_number = dict(reg_collection.find_one({"ROLL_NUM":Roll_no}))
 
     # Updating the Authorization Dictionary by checking the current user is accessing his/her result or not
-    if user_dict["_id"] != user_of_given_roll_number["_id"]:
+    if (user_dict["_id"] != user_of_given_roll_number["_id"] and (user_dict["ROLL_NUM"][2:6]=="BQ5A" or user_dict["ROLL_NUM"][2:6]=="BQ1A")):
+        print(user_dict["ROLL_NUM"])
         authrization_dict["id"] = user_of_given_roll_number["_id"]
         authrization_dict["user_roll_num"] = user_dict["ROLL_NUM"]
         authrization_dict["user_id"] = user_dict["_id"]

@@ -41,6 +41,34 @@ while True:
         def help(message):
             bot.send_message(message.chat.id, help_msg)
         # ====================================================>
+        @bot.message_handler(commands=["deleteuser"], func=reg.admin_authentication)
+        def get_delete_user(message):
+            bot.send_message(message.chat.id, "Enter the student Roll Number")
+            bot.register_next_step_handler(message, delete_user)
+
+        def delete_user(message):
+            try:
+                bot.send_message(message.chat.id, str(reg.deleteUser(message.text)))
+            except Exception as e:
+                bot.send_message(message.chat.id,str(e))
+        # ====================================================>
+
+        # ====================== USER DETAILS COMMAND ===================>
+        @bot.message_handler(commands=["finduser"], func=reg.admin_authentication)
+        def get_user_details(message):
+            bot.send_message(message.chat.id, "Enter the student Roll Number")
+            bot.register_next_step_handler(message, user_details)
+
+        def user_details(message):
+            bot.send_message(message.chat.id, str(reg.user_details(message.text)))
+        # ====================================================>
+
+        # ====================== SEND REGISTRATION DATA =====================>
+        @bot.message_handler(commands=["totalregistrations"], func=reg.admin_authentication)
+        def total_registerd(message):
+            bot.send_message(message.chat.id, reg.total_registrations())
+        # ====================================================>
+        
 
         # ================== REGISTER COMMAND =================>
         @bot.message_handler(commands=['register'])
@@ -58,7 +86,8 @@ while True:
         def getMailId(message):
             try:
                 mailid = (message.text).lower()
-                if (len(mailid) == 19) and (('bq1a' in mailid) or ('bq5a' in mailid))  and ('@vvit.net' in mailid):
+                # if (len(mailid) == 19) and (('bq1a' in mailid) or ('bq5a' in mailid))  and ('@vvit.net' in mailid):
+                if mailid[-9:]=="@vvit.net" or True:
                     name = 'VVITIAN'
                     if(message.chat.first_name and message.chat.last_name):
                         name = message.chat.first_name+ " " + message.chat.last_name
@@ -99,33 +128,6 @@ while True:
         # ====================================================>
 
         # ====================== DEREGISTER USER COMMAND =====================>
-        @bot.message_handler(commands=["deleteuser"], func=reg.admin_authentication)
-        def get_delete_user(message):
-            bot.send_message(message.chat.id, "Enter the student Roll Number")
-            bot.register_next_step_handler(message, delete_user)
-
-        def delete_user(message):
-            try:
-                bot.send_message(message.chat.id, str(reg.deleteUser(message.text)))
-            except Exception as e:
-                bot.send_message(message.chat.id,str(e))
-        # ====================================================>
-
-        # ====================== USER DETAILS COMMAND ===================>
-        @bot.message_handler(commands=["finduser"], func=reg.admin_authentication)
-        def get_user_details(message):
-            bot.send_message(message.chat.id, "Enter the student Roll Number")
-            bot.register_next_step_handler(message, user_details)
-
-        def user_details(message):
-            bot.send_message(message.chat.id, str(reg.user_details(message.text)))
-        # ====================================================>
-
-        # ====================== SEND REGISTRATION DATA =====================>
-        @bot.message_handler(commands=["totalregistrations"], func=reg.admin_authentication)
-        def total_registerd(message):
-            bot.send_message(message.chat.id, reg.total_registrations())
-        # ====================================================>
         
         # ====================== RESULTS =====================>
         def validate_roll_number(message):
@@ -153,7 +155,7 @@ while True:
             else:
                 if result['user_roll_num'] == None and result["id"] == None:
                     bot.send_message(message.chat.id, result["message"]+"\n" + report)
-                elif result['user_id'] not in reg.admin:
+                elif(result['user_id'] not in reg.admin and (result['user_roll_num'][2:6]=="BQ5A" or result['user_roll_num'][2:6]=="BQ1A")) :
                     bot.send_message(result["id"], f'Student with {result["user_roll_num"]} has accessed your results.')
                     bot.send_message(result["user_id"], result["message"]+"\n" + report)
                 else:

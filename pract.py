@@ -1,0 +1,1 @@
+print("ramprasad@vvit.net"[0:-9])

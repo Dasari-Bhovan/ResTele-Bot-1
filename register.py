@@ -5,8 +5,11 @@ import database
 import time
 
 # <====================== VARIABLES ======================>
-years = [19,20,21,22,23,24,25]
-admin = [1387682420,1490833723,862799552,1339656586,1417818674]
+years = [1,19,20,21,22,23,24,25]
+admin = [1387682420,862799552,1339656586,1417818674]
+#mahesh chat id - 1490833723
+# admin=[]
+teachers=[]
 # for y in database.results.list_collection_names():
 #     # collectio name is "R19 Results" and we're slicing it like [1:3] ==> "19" 
 #     # and then conveting to integer and appending that year to "years" list
@@ -60,7 +63,7 @@ def results_authenticate_user(message):
 def verify_otp(message):
     if(message.text == otp_dict[message.chat.id][0]):
         mail_id = otp_dict.pop(message.chat.id)[1]
-        roll_num = mail_id[0:10].upper()
+        roll_num = mail_id[0:-9].upper()
         current_ids.append({
                 "_id":message.chat.id,
                 "ROLL_NUM":roll_num,
@@ -68,8 +71,10 @@ def verify_otp(message):
                 })
         if(mail_id[4:6].lower() == '5a'):
             year = str(int(mail_id[0:2]) - 1)
-        else:
+        elif(mail_id[4:6].lower()=='1a'):
             year = mail_id[0:2]
+        else:
+            year=1
         # Inserting the student details into the database
         student_registrations[int(year)].insert_many(current_ids)
         current_ids.clear()
@@ -92,9 +97,12 @@ def admin_authentication(message):
 def deleteUser(message):
     roll_num = message.upper()
     if(message[4:6].lower() == '5a'):
-            year = str(int(message[0:2]) - 1)
-    else:
+        year = str(int(message[0:2]) - 1)
+    elif(message[4:6].lower()=='1a'):
         year = message[0:2]
+    else:
+        year=1
+
     deleted_user = student_registrations[int(year)].find_one({"ROLL_NUM":roll_num})
     if deleted_user != None:
         student_registrations[int(year)].delete_one({"ROLL_NUM":roll_num})
@@ -121,9 +129,11 @@ def user_details(message):
     details = ""
     roll_num = message.upper()
     if(message[4:6].lower() == '5a'):
-            year = str(int(message[0:2]) - 1)
-    else:
+        year = str(int(message[0:2]) - 1)
+    elif(message[4:6].lower()=='1a'):
         year = message[0:2]
+    else:
+        year=1
     details = student_registrations[int(year)].find_one({"ROLL_NUM":roll_num})
     if details != None:
         return dict(details)
